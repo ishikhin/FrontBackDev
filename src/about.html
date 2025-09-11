@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Общая таблица стилей для всех страниц; путь скорректируйте под свою
+структуру проекта -->
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>О нас - Сайтик</title>
@@ -38,6 +41,26 @@
         <h2>Наша команда</h2>
         <p>Текст о команде...</p>
     </section>
+
+    <button class="theme-toggle" type="button" aria-pressed="false">Тема</button>
+
+
+    <script defer>
+        const KEY='theme', btn=document.querySelector('.theme-toggle');
+        const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+        // Автовыбор: системная тема или сохранённый выбор пользователя
+        if(localStorage.getItem(KEY)==='dark' || (!localStorage.getItem(KEY) &&
+            prefersDark)){
+            document.body.classList.add('theme-dark');
+            btn?.setAttribute('aria-pressed','true');
+        }
+        // Переключение по кнопке с сохранением в localStorage
+        btn?.addEventListener('click', ()=>{
+            const isDark=document.body.classList.toggle('theme-dark');
+            btn.setAttribute('aria-pressed', String(isDark));
+            localStorage.setItem(KEY, isDark ? 'dark' : 'light');
+        });
+    </script>
 </main>
 
 <footer>

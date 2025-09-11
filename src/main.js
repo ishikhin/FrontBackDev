@@ -2,32 +2,25 @@ const dlg = document.getElementById('contactDialog');
 const openBtn = document.getElementById('openDialog');
 const closeBtn = document.getElementById('closeDialog');
 const form = document.getElementById('contactForm');
+
+const doneDlg = document.getElementById('doneDialog');
+const doneCloseBtn = document.getElementById('doneCloseDialog');
+
+
 let lastActive = null;
 openBtn.addEventListener('click', () => {
     lastActive = document.activeElement;
     dlg.showModal(); // модальный режим затемнение
     dlg.querySelector('input,select,textarea,button')?.focus();
 });
+
+doneCloseBtn.addEventListener('click', () => doneDlg.close('cancel'));
 closeBtn.addEventListener('click', () => dlg.close('cancel'));
 form?.addEventListener('submit', (e) => {
     // валидация см. 1.4.2; при успехе закрываем окно
 });
 dlg.addEventListener('close', () => { lastActive?.focus(); });
 // Esc по умолчанию вызывает событие 'cancel' и закрывает <dialog>
-
-
-const modal = document.getElementById('modal');
-const open = document.getElementById('openModal');
-const close = document.getElementById('closeModal');
-let last = null;
-function show(){ last=document.activeElement; modal.hidden=false;
-    modal.querySelector('input,select,textarea,button')?.focus(); }
-function hide(){ modal.hidden=true; last?.focus(); }
-open.addEventListener('click', show);
-close.addEventListener('click', hide);
-modal.addEventListener('click', (e)=>{ if (e.target.dataset.close !==
-    undefined) hide(); });
-
 
 form?.addEventListener('submit', (e) => {
     // 1) Сброс кастомных сообщений
@@ -50,10 +43,12 @@ form?.addEventListener('submit', (e) => {
     }
     // 3) Успешная «отправка» (без сервера)
     e.preventDefault();
+    doneDlg.showModal();
     // Если форма внутри <dialog>, закрываем окно:
     document.getElementById('contactDialog')?.close('success');
     form.reset();
 });
+
 
 
 const phone = document.getElementById('phone');
@@ -71,3 +66,4 @@ phone?.addEventListener('input', () => {
 });
 // Строгая проверка (если задаёте pattern из JS):
 phone?.setAttribute('pattern', '^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$');
+
